@@ -202,7 +202,7 @@ BOOL CTestSysDlg::OnInitDialog()
 	// 改变字体大小设置，并且创建新的字体对象
 	lf.lfHeight = 25;    
 	lf.lfUnderline = FALSE;
-	strcpy(lf.lfFaceName, "黑体");
+	strcpy_s(lf.lfFaceName, "黑体");
 	pNewFont = new CFont; // 注意把CFont* pNewFont; 放在类成员中，在析构函数中delete
 	pNewFont->CreateFontIndirect(&lf);
 	// 通过句柄设置按钮的字体

@@ -50,9 +50,9 @@ bool CHzGL::Create(CWnd* pWnd)
 	LOGFONT lf;
 	m_pdc->GetCurrentFont()->GetLogFont(&lf);
 	lf.lfCharSet=134;
-	strcpy(lf.lfFaceName, "黑体") ;  
+	strcpy_s(lf.lfFaceName, "黑体");
 	fontOpenGL1.CreateFontIndirect(&lf);
-	strcpy(lf.lfFaceName, "宋体") ;  
+	strcpy_s(lf.lfFaceName, "宋体");
 	fontOpenGL2.CreateFontIndirect(&lf);
 	
 	//选择与设备描述符（DC）接近的像素格式

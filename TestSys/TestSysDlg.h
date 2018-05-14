@@ -7,7 +7,7 @@
 #include "DlgCurve.h"
 #include "DlgShow.h"
 #include "afxcmn.h"
-#include "OwnWnd.h""
+#include "OwnWnd.h"
 #include "afxwin.h"
 #include "DlgHisData.h"
 #include "DlgPic.h"

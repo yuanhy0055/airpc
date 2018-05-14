@@ -129,7 +129,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;NI_MEASUREMENT_STUDIO"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;NI_MEASUREMENT_STUDIO;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"

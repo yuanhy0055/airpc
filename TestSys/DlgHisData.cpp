@@ -70,7 +70,7 @@ BOOL CDlgHisData::OnInitDialog()
 	m_Tree.ModifyStyle(NULL, 
 		TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS);
 	//HTREEITEM t_hRoot = m_TreeSelR.InsertItem("选择线缆通道");
-	HTREEITEM t_hSel;
+	//HTREEITEM t_hSel;
 	m_Tree.SetBkColor (RGB(200,200,200));//背景颜色
 	//
 
@@ -199,7 +199,7 @@ OnBnClickedBtnline();
 
 	int   m_h = atoi(strh.Left(2));
 	int   m_m = atoi(strh.Mid(3,2));
-	float m_s = atoi(strh.Right(2));
+	float m_s = atoi(strh.Right(2)) * 1.0f;
 	//
 	GetDlgItem(IDC_STATICSEL)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_RADIO1)->ShowWindow(SW_HIDE);
@@ -290,24 +290,24 @@ OnBnClickedBtnline();
 			{
 				if (Data[8]==0x01)
 				{
-					m_dO2 = (Data[2]*256+Data[3])/100.00;
-					m_dNo2 = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[2]*256+Data[3])/100.0f;
+					m_dNo2 = (Data[0]*256+Data[1])*1.0f;
 					m_dEx = 0.0;
 					m_dUdmh = 0.0;
 				}
 				else if (Data[8]==0x02)
 				{
-					m_dO2 = (Data[4]*256+Data[5])/100.00;
+					m_dO2 = (Data[4]*256+Data[5])/100.0f;
 					m_dNo2 =0.0;
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1]*1.0f);
 				}
 				else if (Data[8]==0x03)
 				{
-					m_dO2 = (Data[6]*256+Data[7])/100.00;
-					m_dNo2 = (Data[4]*256+Data[5]);
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[6]*256+Data[7])/100.0f;
+					m_dNo2 = (Data[4]*256+Data[5])*1.0f;
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1]*1.0f);
 				}
 				if (numshow<30)
 				{
@@ -352,10 +352,10 @@ OnBnClickedBtnline();
 
 					m_h = atoi(strh.Left(2));
 					m_m = atoi(strh.Mid(3,2));
-					m_s = atoi(strh.Right(2));
+					m_s = atoi(strh.Right(2))*1.0f;
 					for (int m=0;m<m_total;m++)
 					{
-						m_s=m_s+(theApp.timernum/1000.0);
+						m_s=m_s+(theApp.timernum/1000.0f);
 						if (m_s>59)
 						{
 							m_m++;
@@ -460,13 +460,13 @@ void CDlgHisData::OnBnClickedBtnsave()
 	float m_dEx = 0.0;
 	float m_dUdmh = 0.0;
 	CString str = "";
-	int i,j;
+	//int i,j;
 	CString temp;
 	FILE* fpSaveTest;
 	CString strSavePath;
 	int m_h = atoi(strh.Left(2));
 	int m_m = atoi(strh.Mid(3,2));
-	float m_s = atoi(strh.Right(2));
+	float m_s = atoi(strh.Right(2)) * 1.0f;
 	CFileDialog savedlg(FALSE,NULL,NULL,OFN_HIDEREADONLY | OFN_NOCHANGEDIR,"*.xls|*.xls",NULL);
 	if(savedlg.DoModal()==IDOK)
 	{
@@ -499,8 +499,8 @@ void CDlgHisData::OnBnClickedBtnsave()
 				temp =str + "\t";
 				if (Data[8]==0x01)
 				{
-					m_dO2 = (Data[2]*256+Data[3])/100.00;
-					m_dNo2 = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[2]*256+Data[3])/100.0f;
+					m_dNo2 = (Data[0]*256+Data[1])*1.0f;
 					m_dEx = 0.0;
 					m_dUdmh = 0.0;
 					str.Format("O2-%.2f",m_dO2);
@@ -512,10 +512,10 @@ void CDlgHisData::OnBnClickedBtnsave()
 				}
 				else if (Data[8]==0x02)
 				{
-					m_dO2 = (Data[4]*256+Data[5])/100.00;
+					m_dO2 = (Data[4]*256+Data[5])/100.0f;
 					m_dNo2 =0.0;
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 					str.Format("O2-%.2f",m_dO2);
 					temp =temp + str + "\t";
 					str.Format("Ex-%.2f",m_dEx);
@@ -527,10 +527,10 @@ void CDlgHisData::OnBnClickedBtnsave()
 				}
 				else if (Data[8]==0x03)
 				{
-					m_dO2 = (Data[6]*256+Data[7])/100.00;
-					m_dNo2 = (Data[4]*256+Data[5]);
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[6]*256+Data[7])/100.0f;
+					m_dNo2 = (Data[4]*256+Data[5])*1.0f;
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 					str.Format("O2-%.2f",m_dO2);
 					temp =temp + str + "\t";
 					str.Format("NO2-%d",m_dNo2);
@@ -546,7 +546,7 @@ void CDlgHisData::OnBnClickedBtnsave()
 				fprintf(fpSaveTest,"\n");*/
 				index++;
 				///////////////////
-				m_s=m_s+theApp.timernum/1000.0;
+				m_s=m_s+theApp.timernum/1000.0f;
 				if (m_s>59)
 				{
 					m_m++;
@@ -630,7 +630,7 @@ void CDlgHisData::OnBnClickedBtnnext()
 
 	int m_h = atoi(strh.Left(2));
 	int m_m = atoi(strh.Mid(3,2));
-	float m_s = atoi(strh.Right(2));
+	float m_s = atoi(strh.Right(2))*1.0f;
 	int index = 0;
 	int numshow = 0;
 	BOOL bover = FALSE;
@@ -661,10 +661,10 @@ void CDlgHisData::OnBnClickedBtnnext()
 
 			m_h = atoi(strh.Left(2));
 			m_m = atoi(strh.Mid(3,2));
-			m_s = atoi(strh.Right(2));
+			m_s = atoi(strh.Right(2))*1.0f;
 			for (int m=0;m<m_total;m++)
 			{
-				m_s=m_s+(theApp.timernum/1000.0);
+				m_s=m_s+(theApp.timernum/1000.0f);
 				if (m_s>59)
 				{
 					m_m++;
@@ -694,24 +694,24 @@ void CDlgHisData::OnBnClickedBtnnext()
 			{
 				if (Data[8]==0x01)
 				{
-					m_dO2 = (Data[2]*256+Data[3])/100.00;
-					m_dNo2 = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[2]*256+Data[3])/100.0f;
+					m_dNo2 = (Data[0]*256+Data[1])*1.0f;
 					m_dEx = 0.0;
 					m_dUdmh = 0.0;
 				}
 				else if (Data[8]==0x02)
 				{
-					m_dO2 = (Data[4]*256+Data[5])/100.00;
+					m_dO2 = (Data[4]*256+Data[5])/100.0f;
 					m_dNo2 =0.0;
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 				}
 				else if (Data[8]==0x03)
 				{
-					m_dO2 = (Data[6]*256+Data[7])/100.00;
-					m_dNo2 = (Data[4]*256+Data[5]);
-					m_dEx = (Data[2]*256+Data[3])/100.00;
-					m_dUdmh = (Data[0]*256+Data[1]);
+					m_dO2 = (Data[6]*256+Data[7])/100.0f;
+					m_dNo2 = (Data[4]*256+Data[5])*1.0f;
+					m_dEx = (Data[2]*256+Data[3])/100.0f;
+					m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 				}
 				if (numshow<30)
 				{
@@ -868,24 +868,24 @@ void CDlgHisData::OnBnClickedBtntrace()
 
 			if (Data[8]==0x01)
 			{
-				m_dO2 = (Data[2]*256+Data[3])/100.00;
-				m_dNo2 = (Data[0]*256+Data[1]);
+				m_dO2 = (Data[2]*256+Data[3])/100.0f;
+				m_dNo2 = (Data[0]*256+Data[1])*1.0f;
 				m_dEx = 0.0;
 				m_dUdmh = 0.0;
 			}
 			else if (Data[8]==0x02)
 			{
-				m_dO2 = (Data[4]*256+Data[5])/100.00;
+				m_dO2 = (Data[4]*256+Data[5])/100.0f;
 				m_dNo2 =0.0;
-				m_dEx = (Data[2]*256+Data[3])/100.00;
-				m_dUdmh = (Data[0]*256+Data[1]);
+				m_dEx = (Data[2]*256+Data[3])/100.0f;
+				m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 			}
 			else if (Data[8]==0x03)
 			{
-				m_dO2 = (Data[6]*256+Data[7])/100.00;
-				m_dNo2 = (Data[4]*256+Data[5]);
-				m_dEx = (Data[2]*256+Data[3])/100.00;
-				m_dUdmh = (Data[0]*256+Data[1]);
+				m_dO2 = (Data[6]*256+Data[7])/100.0f;
+				m_dNo2 = (Data[4]*256+Data[5])*1.0f;
+				m_dEx = (Data[2]*256+Data[3])/100.0f;
+				m_dUdmh = (Data[0]*256+Data[1])*1.0f;
 			}
 			if (index<1000)
 			{
