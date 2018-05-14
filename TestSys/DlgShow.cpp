@@ -322,7 +322,6 @@ BEGIN_EVENTSINK_MAP(CDlgShow, CDialog)
 	ON_EVENT(CDlgShow, IDC_CWBOOLEAN2, DISPID_CLICK, ClickCwboolean2, VTS_NONE)
 //	ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, OnCommMscomm1, VTS_NONE)
 ON_EVENT(CDlgShow, IDC_CWBOOLEAN1, DISPID_CLICK, ClickCwboolean1, VTS_NONE)
-//ON_EVENT(CDlgShow, IDC_CWBOOLEANRUN, DISPID_CLICK, ClickCwbooleanrun, VTS_NONE)
 ON_EVENT(CDlgShow, IDC_CWBOOLEANRUN, 1, ValueChangedCwbooleanrun, VTS_BOOL)
 ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, CDlgShow::OnCommMscomm1, VTS_NONE)
 END_EVENTSINK_MAP()
@@ -1011,40 +1010,7 @@ void CDlgShow::ClickCwboolean1()
 	// TODO: 在此处添加消息处理程序代码
 	CDlgShow::m_dlgparam->ShowWindow(SW_SHOW);
 }
-/*
-void CDlgShow::ClickCwbooleanrun()
-{
-	// TODO: 在此处添加消息处理程序代码
-	memset((char *)ucopydata,0,sizeof(char)*24*9);
-	CTime time;
-	time = CTime::GetCurrentTime();
-	CString strname = "",strnamedes = "";
-	CString s ;//= time.Format("%Y年%m月%d日\\");
-	s = theApp.GetApplicationPath()+"\\savedata\\";
-	CreateDirectory(s,NULL);
-	s = time.Format("%Y年%m月%d日\\");
-	s = theApp.GetApplicationPath()+"\\savedata\\"+s;
-	CreateDirectory(s,NULL);
 
-
-	CString strdes;
-	strdes =s+time.Format("%H-%M-%S\\");;
-	CreateDirectory(strdes,NULL);
-	int fnum = 0;
-	for (int i=0;i<24;i++)
-	{
-		s.Format("dw%d.dat",i+1);
-		if (m_dwstate[i]!=0)
-		{
-			p_File[i] = fopen(strdes+s,"wb");
-		}
-	}
-
-	Sleep(10);
-	m_cycnum = 0;//开始定时
-	OnBnClickedButton1();
-}
-*/
 void CDlgShow::OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 在此添加控件通知处理程序代码

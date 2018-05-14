@@ -85,7 +85,6 @@ public:
 	HANDLE hCom;
 	afx_msg void OnBnClickedButton2();
 	void ClickCwboolean1();
-//	void ClickCwbooleanrun();
 	afx_msg void OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedBtnxg();
 //	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
