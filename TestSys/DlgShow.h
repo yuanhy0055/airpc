@@ -6,8 +6,8 @@
 #include "DlgParam.h"
 #include "mscomm1.h"
 
-#include "ComPort.h"
-#include "Serial.h"
+//#include "ComPort.h"
+//#include "Serial.h"
 #include "afxwin.h"
 #define	WM_COMM_MESSAGE WM_USER+1
 
@@ -74,7 +74,7 @@ public:
 	//BYTE m_Type[1024]; 
 private:
 	char strbuf[16];
-	CSerial serial;
+	//CSerial serial;
 	int sendtotal;
 	int readtotal;
 public:
