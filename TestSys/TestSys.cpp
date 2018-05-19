@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "TestSys.h"
 #include "TestSysDlg.h"
+#include <io.h>
+#include <fcntl.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -78,6 +80,17 @@ BOOL CTestSysApp::InitInstance()
 	//则需要 InitCommonControls()。否则，将无法创建窗口。
 	InitCommonControls();
 //	SetDialogBkColor(RGB(0,0,255),RGB(255,0,0));
+
+	//void InitConsole()
+	{
+    int nRet= 0;
+    FILE* fp;
+    AllocConsole();
+    nRet= _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+    fp = _fdopen(nRet, "w");
+    *stdout = *fp;
+    setvbuf(stdout, NULL, _IONBF, 0);
+	}
 	
 	CWinApp::InitInstance();
 	AfxEnableControlContainer();
