@@ -35,17 +35,17 @@ void CDlgShow::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDlgShow, CDialog)
-		ON_MESSAGE(WM_MY_SETNAME,OnSetBtnName)
-		ON_WM_TIMER()
-		ON_WM_DESTROY()
-		ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
-		ON_WM_CLOSE()
+	ON_MESSAGE(WM_MY_SETNAME,OnSetBtnName)
+	ON_WM_TIMER()
+	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
+	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BUTTON2, OnBnClickedButton2)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, OnNMClickList1)
 	ON_BN_CLICKED(IDC_BTNXG, OnBnClickedBtnxg)
-//	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, OnNMDblclkList1)
-ON_WM_MEASUREITEM()
-ON_BN_CLICKED(IDC_BUTTON4, OnBnClickedButton4)
+	//	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, OnNMDblclkList1)
+	ON_WM_MEASUREITEM()
+	ON_BN_CLICKED(IDC_BUTTON4, OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -379,14 +379,7 @@ LRESULT CDlgShow::OnSetBtnName(WPARAM wparam,LPARAM lParam)
 				state = GetPrivateProfileInt(m_strsel,"state ",0,theApp.m_readini);
 				//theApp.i_state[k][i] =state;
 				theApp.i_dwIndex[k][i] = m;
-				//if (state == 1)
-				//{
-				//	m_List.SetItemText(m,1,"在线");
-				//}
-				//else
-				//{
-				//	m_List.SetItemText(m,1,"不在线");
-				//}
+
 				GetPrivateProfileString(m_strsel,"num",NULL,strBuff,20,theApp.m_readini); 
 				strValue = strBuff;
 				m_List.SetItemText(m,2,strValue);
@@ -1050,6 +1043,7 @@ void CDlgShow::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct
 void CDlgShow::ValueChangedCwbooleanrun(BOOL Value)
 {
 	// TODO: 在此处添加消息处理程序代码
+	printf("on valuechgCwBLrun\n");
 	if (!Value)
 	{
 		CDlgShow::m_dlgparam->ShowWindow(SW_HIDE);
