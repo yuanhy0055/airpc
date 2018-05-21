@@ -313,17 +313,17 @@ BOOL CDlgShow::OnInitDialog()
 	//m_cycnum = 0;//开始定时
 
 	//OnBnClickedButton1();
-	OnBnClickedButton4();
+	OnBnClickedButton4();//初始化串口YY.
 	return TRUE;
 
 }
 BEGIN_EVENTSINK_MAP(CDlgShow, CDialog)
 	//ON_EVENT(CDlgShow, IDC_CWBOOLEAN1, 1, ValueChangedCwboolean1, VTS_BOOL)
 	ON_EVENT(CDlgShow, IDC_CWBOOLEAN2, DISPID_CLICK, ClickCwboolean2, VTS_NONE)
-//	ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, OnCommMscomm1, VTS_NONE)
-ON_EVENT(CDlgShow, IDC_CWBOOLEAN1, DISPID_CLICK, ClickCwboolean1, VTS_NONE)
-ON_EVENT(CDlgShow, IDC_CWBOOLEANRUN, 1, ValueChangedCwbooleanrun, VTS_BOOL)
-ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, CDlgShow::OnCommMscomm1, VTS_NONE)
+	//	ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, OnCommMscomm1, VTS_NONE)
+	ON_EVENT(CDlgShow, IDC_CWBOOLEAN1, DISPID_CLICK, ClickCwboolean1, VTS_NONE)
+	ON_EVENT(CDlgShow, IDC_CWBOOLEANRUN, 1, ValueChangedCwbooleanrun, VTS_BOOL)
+	ON_EVENT(CDlgShow, IDC_MSCOMM1, 1, CDlgShow::OnCommMscomm1, VTS_NONE)
 END_EVENTSINK_MAP()
 
 /*
@@ -591,7 +591,7 @@ void CDlgShow::OnBnClickedButton4()
 	int nPort = GetPrivateProfileInt("COM","num2",0,theApp.m_readini);
 
 	if(m_cComm.get_PortOpen()) //如果发现串口本来是打开的，则关闭串口
-	m_cComm.put_PortOpen(FALSE);
+		m_cComm.put_PortOpen(FALSE);
 	m_cComm.put_CommPort(nPort); //选择COM1端口
 	m_cComm.put_InputMode(1); //输入方式为二进制方式
 	m_cComm.put_InBufferSize(2048); //设置输入缓冲区
@@ -599,10 +599,10 @@ void CDlgShow::OnBnClickedButton4()
 	m_cComm.put_Settings(TEXT("9600,n,8,1"));//波特率，无校验，个数据位，个停止位
 	if(!m_cComm.get_PortOpen())
 	{
-	m_cComm.put_PortOpen(TRUE); //打开串口
-	m_cComm.put_RThreshold(16); //每当接收缓冲区有个字符则接收串口数据
-	m_cComm.put_InputLen(0); //设置当前缓冲区长度为
-	m_cComm.get_Input(); //预读缓冲区以清除残留数据
+		m_cComm.put_PortOpen(TRUE); //打开串口
+		m_cComm.put_RThreshold(16); //每当接收缓冲区有个字符则接收串口数据
+		m_cComm.put_InputLen(0); //设置当前接收区数据长度为0，表示全部读取
+		m_cComm.get_Input(); //预读缓冲区以清除残留数据
 	}
 }
 void CDlgShow::OnBnClickedButton1()
@@ -1169,8 +1169,8 @@ void CDlgShow::OnCommMscomm1()
 	COleSafeArray safearray_inp;
 	LONG len, k;
 	// 
-	char rxdata[50];//数据长度根据自己的实际要求设置
-
+	unsigned char rxdata[50];//数据长度根据自己的实际要求设置
+	printf("on_mscomm1: %d\n", m_cComm.get_CommEvent());
 	//	if(bStartRev == 1)
 	{
 
@@ -1179,6 +1179,7 @@ void CDlgShow::OnCommMscomm1()
 			variant_inp = m_cComm.get_Input(); //read data
 			safearray_inp = variant_inp;
 			len = safearray_inp.GetOneDimSize();//得到有效数据长度
+			printf("RECV %d:\n", len);
 			for (k = 0; k < len; k++)
 			{
 				safearray_inp.GetElement(&k, rxdata+k);
@@ -1186,8 +1187,10 @@ void CDlgShow::OnCommMscomm1()
 			//接收数据后，根据实际解析rxdata
 			for(int i=0;i<(int)len;i++)
 			{
-				udata[i] = rxdata[i]; 
+				udata[i] = rxdata[i];
+				printf("%02x",rxdata[i]);
 			}
+			printf("\n");
 			OnBnClickedButton2();
 
 		}
