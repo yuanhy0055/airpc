@@ -60,6 +60,7 @@ public:
 	int ComNum;
 	CString str_dw[24];
 	CString m_strTXData[24];
+	int m_rw232[24];		//¼ÇÂ¼232Í¨Ñ¶¶ÁÐ´×´Ì¬YY.
 	double m_yj1[24][4];
 	double m_yj2[24][4];
 	double m_TWA[24][4];

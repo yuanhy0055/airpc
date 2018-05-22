@@ -197,6 +197,7 @@ BOOL CDlgShow::OnInitDialog()
 				//{
 				//	m_List.SetItemText(m,1,_T("不在线"));
 				//}
+				m_List.SetItemText(m,1,_T("不在线"));
 				GetPrivateProfileString(m_strsel,"num",NULL,strBuff,20,theApp.m_readini); 
 				strValue = strBuff;
 				m_List.SetItemText(m,2,strValue);
@@ -279,6 +280,8 @@ BOOL CDlgShow::OnInitDialog()
 
 
 	m_cycnum = 0;
+	for(int i=0;i<24;i++)
+		m_rw232[i] = 0;
 
 	CDlgShow::m_dlgparam = new CDlgParam;
 	CDlgShow::m_dlgparam->Create(IDD_DLGPARAM);
@@ -566,6 +569,27 @@ void CDlgShow::OnTimer(UINT nIDEvent)
 		str.Format("%d---",sendtotal);
 	    str = str+str2;//m_strTXData[m_cycnum];
 		GetDlgItem(IDC_STATIC11)->SetWindowText(str);
+		printf("->send:{%s}\n", str);
+		for(int i=0;i<24;i++) {
+			printf("%d ", m_rw232[i]);
+		}
+		printf("\n");
+		for(int i=0;i<24;i++) {
+			if(m_rw232[i] > 3) {
+				printf("set [%d] OFFLINE\n", i);
+				m_List.SetItemText(theApp.i_dwIndex[i][0],1,"不在线");
+				m_List.SetItemText(theApp.i_dwIndex[i][1],1,"不在线");
+				m_List.SetItemText(theApp.i_dwIndex[i][2],1,"不在线");
+				m_List.SetItemText(theApp.i_dwIndex[i][3],1,"不在线");
+				m_rw232[i] = 0;
+			}
+		}
+
+		m_rw232[m_cycnum] += 1; //请求数据状态
+
+		if(m_rw232[m_cycnum]>3) {
+		}
+
 
 		m_cycnum++;
 		if (m_cycnum>=m_dwnum)
@@ -719,8 +743,13 @@ void CDlgShow::OnBnClickedButton2()
 			MODE = 3;
 		}
 
-	}//////////////////////////////////////////////////////////////////////////
+	} else {
+		printf("        !!! !!! !!!data format ERROR, drop it\n");
+		return;
+	}
 	DWSEL=udata[2];
+	m_rw232[DWSEL-1] = 0;
+	printf("clear %d flag\n",DWSEL-1);
 	/*switch(udata[2])
 	{
 	case 0x01:
@@ -1164,7 +1193,7 @@ void CDlgShow::OnCommMscomm1()
 	LONG len, k;
 	// 
 	unsigned char rxdata[50];//数据长度根据自己的实际要求设置
-	printf("on_mscomm1: %d\n", m_cComm.get_CommEvent());
+	printf("on_mscomm1: %d......", m_cComm.get_CommEvent());
 	//	if(bStartRev == 1)
 	{
 
@@ -1185,7 +1214,13 @@ void CDlgShow::OnCommMscomm1()
 				printf("%02x",rxdata[i]);
 			}
 			printf("\n");
-			OnBnClickedButton2();
+
+			if((rxdata[0]==0x68) && (rxdata[1]==0x00) && (rxdata[3]==0x68)) {
+				OnBnClickedButton2();
+			} else {
+				//续拼DATA
+				printf(".............header error");
+			}
 
 		}
 	}
