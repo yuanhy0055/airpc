@@ -588,10 +588,6 @@ void CDlgShow::OnTimer(UINT nIDEvent)
 
 		m_rw232[m_cycnum] += 1; //ÇëÇóÊý¾Ý×´Ì¬
 
-		if(m_rw232[m_cycnum]>3) {
-		}
-
-
 		m_cycnum++;
 		if (m_cycnum>=m_dwnum)
 		{
