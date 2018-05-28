@@ -280,6 +280,7 @@ BOOL CDlgShow::OnInitDialog()
 
 
 	m_cycnum = 0;
+	cx_mode = 0;
 	for(int i=0;i<24;i++)
 		m_rw232[i] = 0;
 
@@ -617,8 +618,8 @@ void CDlgShow::OnBnClickedButton4()
 	if(!m_cComm.get_PortOpen())
 	{
 		m_cComm.put_PortOpen(TRUE); //打开串口
-		m_cComm.put_RThreshold(16); //每当接收缓冲区有个字符则接收串口数据
-		m_cComm.put_InputLen(0); //设置当前接收区数据长度为0，表示全部读取
+		m_cComm.put_RThreshold(12); //每当接收缓冲区有个字符则接收串口数据
+		m_cComm.put_InputLen(12); //设置当前接收区数据长度为0，表示全部读取
 		m_cComm.get_Input(); //预读缓冲区以清除残留数据
 	}
 }
@@ -1191,7 +1192,6 @@ void CDlgShow::OnCommMscomm1()
 	VARIANT variant_inp;
 	COleSafeArray safearray_inp;
 	LONG len, k;
-	// 
 	unsigned char rxdata[50];//数据长度根据自己的实际要求设置
 	printf("on_mscomm1: %d......", m_cComm.get_CommEvent());
 	//	if(bStartRev == 1)
@@ -1216,7 +1216,29 @@ void CDlgShow::OnCommMscomm1()
 			printf("\n");
 
 			if((rxdata[0]==0x68) && (rxdata[1]==0x00) && (rxdata[3]==0x68)) {
-				OnBnClickedButton2();
+				if(cx_mode) {
+					OnBnClickedButton2();
+				} else {	//Adjust Comm Param
+					cx_mode = rxdata[4] & 0x0f;
+					switch(cx_mode) {
+					case 0x01:
+						OnBnClickedButton2();
+						break;
+					case 0x02:
+						m_cComm.get_Input(); //清除残留数据
+						m_cComm.put_RThreshold(14); //接收缓冲区
+						m_cComm.put_InputLen(14); //读取数量
+						break;
+					case 0x03:
+						m_cComm.get_Input(); //清除残留数据
+						m_cComm.put_RThreshold(16); //接收缓冲区
+						m_cComm.put_InputLen(16); //读取数量
+						break;
+					default:
+						printf(".............head=OK, mode error");
+						break;
+					}
+				}
 			} else {
 				//续拼DATA
 				printf(".............header error");
